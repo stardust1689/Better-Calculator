@@ -1,0 +1,27 @@
+// exp is an array of numbers and operators, formatted as [ number, operator, number, operator, number, etc].
+// operators can be "**", "*", "/", "+", and "-".
+
+calculate(exp) {
+    for item in extension {
+        if item == "**" {
+            replace item and two adacent items (num1 and num2) with num1 ** num2 
+        }
+    }
+    for item in extension {
+        if item == "*" {
+            replace item and two adacent items (num1 and num2) with num1 * num2 
+        }
+        if item == "/" {
+            replace item and two adacent items (num1 and num2) with num1 / num2 
+        }
+    }
+    for item in extension {
+        if item == "+" {
+            replace item and two adacent items (num1 and num2) with num1 + num2 
+        }
+        if item == "-*" {
+            replace item and two adacent items (num1 and num2) with num1 - num2 
+        }
+    }
+    return last item in exp (will be a number)
+}
