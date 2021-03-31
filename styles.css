@@ -12,13 +12,46 @@ p {
 }
 
 .calculator {
+    /* position: relative; */
     width: 22.5rem;
     height: 33.75rem;
     background-color: #000F1E;
 }
 
 .expression-container {
+    position: relative;
     height: 20.25rem;
+}
+
+.expression {
+    position: absolute;
+    bottom: 0;
+    font: "Times New Roman";
+    border-top: 0.2rem solid;
+    border-color: #205D9A;
+    width: 100%;
+    height: 3.325rem;
+    color: #D6EAF0;
+}
+
+.wide {
+    width: 95%;
+    margin: auto;
+    font-size: 1.25rem;
+}
+
+.problem {
+    padding: 0.8rem 0;
+    text-align: left;
+}
+
+input {
+   background-color: #000F1E;
+   color: #D6EAF0;
+}
+
+.solution {
+    text-align: right;
 }
 
 .buttons {
