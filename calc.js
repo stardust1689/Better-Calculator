@@ -18,11 +18,14 @@ const validKeys = [
     "/",
     "(",
     ")",
-    "^",
+    "^"
+];
+
+const inputKeys = [
     "Backspace",
     "ArrowRight",
     "ArrowLeft"
-];
+]
 
 let numbers = ("1234567890.")
 
@@ -66,13 +69,15 @@ const specialKeysCheck = event => {
         newExpression = newExpression.replaceAll("log", "l");
         newExpression = newExpression.replaceAll("ln", "n");
         console.log(newExpression);
-        newExpression = newExpression.match(/[sctpeln()\+\-*\/^]|[0-9]+/g);
+        newExpression = newExpression.match(/[sctpeln()\+\-*\/^]|\d+(\.\d+)?|\.\d+/g);
         newExpression = newExpression.map(char => {
-            if (!isNaN(Number(char))) { return Number(char) }
+            if (!isNaN(Number(char)) || char === ".") { return Number(char) }
             else { return char }
         })
         console.log(newExpression);
-        console.log(calculate(newExpression));
+        const calculation = calculate(newExpression);
+        document.getElementById("calculation").innerText = calculation;
+        console.log(calculation);
     }
 }
 
@@ -87,13 +92,27 @@ document.addEventListener("keydown", event => {
 
 document.getElementById("exp-input").addEventListener("keydown", event => {
     specialKeysCheck(event);
-    if (!validKeys.includes(event.key)) {
+    if (!validKeys.includes(event.key) && !inputKeys.includes(event.key)) {
         event.preventDefault();
     }
 });
 
 const calculate = expression => {
     let exp = expression.slice();
+    const validStarts = "1234567890.("
+    const specials = "sctSCTln";
+    const ops = "+*/^";
+    let parenNum = 0;
+    for (let i = 0; i < exp.length; i++) {
+        if (typeof exp[i] === "number" && typeof exp[i+1] === "number") { return "invalid"; }
+        if (exp[i] === ")") { parenNum--; }
+        else if (exp[i] === "(") { parenNum++; }
+        if (parenNum < 0) { return "invalid"; }
+        if (specials.includes(exp[i]) && (i+1 === exp.length || exp[i+1] !== "(")) { return "invalid"; }
+        else if (i === 0 && ops.includes(exp[i])) { return "invalid"; }
+        else if ((ops.includes(exp[i]) || exp[i] === "-") && (i+1 === exp.length || ops.includes(exp[i+1]))) { return "invalid"; }
+    }
+    
     while (exp.length > 1) {
 
         while (exp.includes("p")) {
@@ -119,8 +138,9 @@ const calculate = expression => {
         }
 
         let i = 0
-        while (i <= expression.length) {
+        while (i < expression.length) {
             if (exp[i] === "-" && (i === 0 || typeof exp[i - 1] !== "number")) { exp.splice(i, 1, -1, "*"); }
+            else if (exp[i] === "+" && (i === 0 || typeof exp[i - 1] !== "number")) { exp.splice(i, 1, 1, "*"); }
             i++;
         }
 
@@ -209,8 +229,26 @@ const calculate = expression => {
         }
     }
 
-    return exp[0]
+    if (exp.length === 0 || exp[0] === NaN || typeof exp[0] !== "number") { return "invalid" }
+
+    const calculation = exp[0];
+    let numOfPlaces = 0;
+    if (Math.round(calculation) !== calculation) {
+        console.log("DECIMAL!")
+        decimalAsStr = (calculation - Math.floor(calculation)).toFixed(7).toString();
+        while (decimalAsStr[decimalAsStr.length - 1] === "0") {
+            decimalAsStr = decimalAsStr.slice(0, decimalAsStr.length - 1);
+        }
+        numOfPlaces = decimalAsStr.length
+        return roundOff(calculation, numOfPlaces);
+    }
+    return calculation;
 }
+
+const roundOff = (num, places) => {
+    let n = Math.pow(10, places);
+    return Math.round(num * n) / n;
+} 
 
 const calcSin = exp => Math.sin(calculate(exp));
 
