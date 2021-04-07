@@ -54,48 +54,64 @@ const specialKeysCheck = event => {
         event.preventDefault();
         document.getElementById("exp-input").value += "ln";
     } else if (event.key === "Enter") {
-        let newExpression = document.getElementById("exp-input").value
-        console.log(newExpression);
-        newExpression = newExpression.replaceAll("asin", "S");
-        newExpression = newExpression.replaceAll("acos", "C");
-        newExpression = newExpression.replaceAll("atan", "T");
-        newExpression = newExpression.replaceAll("sin^-1", "S");
-        newExpression = newExpression.replaceAll("cos^-1", "C");
-        newExpression = newExpression.replaceAll("tan^-1", "T");        
-        newExpression = newExpression.replaceAll("sin", "s");
-        newExpression = newExpression.replaceAll("cos", "c");
-        newExpression = newExpression.replaceAll("tan", "t");
-        newExpression = newExpression.replaceAll("pi", "p");
-        newExpression = newExpression.replaceAll("log", "l");
-        newExpression = newExpression.replaceAll("ln", "n");
-        console.log(newExpression);
-        newExpression = newExpression.match(/[sctpeln()\+\-*\/^]|\d+(\.\d+)?|\.\d+/g);
-        newExpression = newExpression.map(char => {
-            if (!isNaN(Number(char)) || char === ".") { return Number(char) }
-            else { return char }
+        let newExpression = document.getElementById("exp-input")
+        let newExpressionCalc = newExpression.value.replaceAll("asin", "S");
+        newExpressionCalc = newExpressionCalc.replaceAll("acos", "C");
+        newExpressionCalc = newExpressionCalc.replaceAll("atan", "T");
+        newExpressionCalc = newExpressionCalc.replaceAll("sin^-1", "S");
+        newExpressionCalc = newExpressionCalc.replaceAll("cos^-1", "C");
+        newExpressionCalc = newExpressionCalc.replaceAll("tan^-1", "T");        
+        newExpressionCalc = newExpressionCalc.replaceAll("sin", "s");
+        newExpressionCalc = newExpressionCalc.replaceAll("cos", "c");
+        newExpressionCalc = newExpressionCalc.replaceAll("tan", "t");
+        newExpressionCalc = newExpressionCalc.replaceAll("pi", "p");
+        newExpressionCalc = newExpressionCalc.replaceAll("log", "l");
+        newExpressionCalc = newExpressionCalc.replaceAll("ln", "n");
+        newExpressionCalc = newExpressionCalc.match(/[sctpeln()\+\-*\/^]|\d+(\.\d+)?|\.\d+/g);
+
+        newExpressionCalc = newExpressionCalc.map(char => {
+            if (!isNaN(Number(char)) || char === ".") { return Number(char); }
+            else { return char; }
         })
-        console.log(newExpression);
-        const calculation = calculate(newExpression);
+
+        const calculation = calculate(newExpressionCalc);
+
         document.getElementById("calculation").innerText = calculation;
-        console.log(calculation);
+        expressions.push(newExpression.value);
+        document.getElementById("problem").innerText = newExpression.value;
+        for (element of document.getElementById("expression-container").querySelectorAll("*")) {
+            element.removeAttribute("id");
+        }
+        newExpression.remove();
+
+        
+        const next = '<td class="problem" id="problem"><input id="exp-input" autofocus></input></td><td class="calculation" id="calculation"></td>';
+        const nextExpression = document.createElement("tr");
+        nextExpression.setAttribute("class", "expression");
+        nextExpression.innerHTML = next;
+        document.querySelector("tbody").append(nextExpression);
+        resetListeners();
     }
 }
 
-document.addEventListener("keydown", event => {
-    if (event.target.id !== "exp-input") {
-        specialKeysCheck(event);
-        if (validKeys.includes(event.key)) {
-            document.getElementById("exp-input").value += event.key;
+const resetListeners = () => {
+    document.addEventListener("keydown", event => {
+        if (event.target.id !== "exp-input") {
+            specialKeysCheck(event);
+            if (validKeys.includes(event.key)) {
+                document.getElementById("exp-input").value += event.key;
+            }
         }
-    }
-});
+    });
 
-document.getElementById("exp-input").addEventListener("keydown", event => {
-    specialKeysCheck(event);
-    if (!validKeys.includes(event.key) && !inputKeys.includes(event.key)) {
-        event.preventDefault();
-    }
-});
+    document.getElementById("exp-input").addEventListener("keydown", event => {
+        specialKeysCheck(event);
+        if (!validKeys.includes(event.key) && !inputKeys.includes(event.key)) {
+            event.preventDefault();
+        }
+    });
+}
+
 
 const calculate = expression => {
     let exp = expression.slice();
@@ -103,6 +119,17 @@ const calculate = expression => {
     const specials = "sctSCTln";
     const ops = "+*/^";
     let parenNum = 0;
+
+    while (exp.includes("p")) {
+        let index = exp.indexOf("p");
+        exp.splice(index, 1, Math.PI);
+    }
+
+    while (exp.includes("e")) {
+        let index = exp.indexOf("e");
+        exp.splice(index, 1, Math.E);
+    }
+
     for (let i = 0; i < exp.length; i++) {
         if (typeof exp[i] === "number" && typeof exp[i+1] === "number") { return "invalid"; }
         if (exp[i] === ")") { parenNum--; }
@@ -114,16 +141,6 @@ const calculate = expression => {
     }
     
     while (exp.length > 1) {
-
-        while (exp.includes("p")) {
-            let index = exp.indexOf("p");
-            exp.splice(index, 1, Math.PI);
-        }
-
-        while (exp.includes("e")) {
-            let index = exp.indexOf("e");
-            exp.splice(index, 1, Math.E);
-        }
         
         while (exp.includes("(")) {
             let parenNum = 1;
@@ -266,3 +283,4 @@ let exp3 = ["-", 4, "+", "s", "(", 45, "*", "p", "*", "(", 2, ")", "*", "l", "("
 // let exp2 = [1, "-", 3]
 
 // ***/-+++
+resetListeners();

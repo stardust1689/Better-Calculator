@@ -8,15 +8,13 @@
 </head>
 <body>
     <div class="calculator">
-        <div class="expression-container">
-            <div class="expression">
-                <table class="wide">
-                    <tr>
-                        <td class="problem"><input id="exp-input" autofocus></input></td>
-                        <td class="solution">123</td>
-                    </tr>
-                </table>
-            </div>
+        <div class="expression-container" id="expression-container">
+            <table class="expressions">
+                <tr class="expression">
+                    <td class="problem" id="problem"><input id="exp-input" autofocus></input></td>
+                    <td class="calculation" id="calculation"></td>
+                </tr>
+            </table>
         </div>
         <div class="buttons">
             <div class="clear">
