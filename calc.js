@@ -67,7 +67,8 @@ const specialKeysCheck = event => {
         newExpressionCalc = newExpressionCalc.replaceAll("pi", "p");
         newExpressionCalc = newExpressionCalc.replaceAll("log", "l");
         newExpressionCalc = newExpressionCalc.replaceAll("ln", "n");
-        newExpressionCalc = newExpressionCalc.match(/[sctpeln()\+\-*\/^]|\d+(\.\d+)?|\.\d+/g);
+        newExpressionCalc = newExpressionCalc.match(/[sctpeln()\+\-*\/\^]|\d+(\.\d+)?|\.\d+/g);
+        console.log(newExpressionCalc);
 
         newExpressionCalc = newExpressionCalc.map(char => {
             if (!isNaN(Number(char)) || char === ".") { return Number(char); }
@@ -79,7 +80,7 @@ const specialKeysCheck = event => {
         document.getElementById("calculation").innerText = calculation;
         expressions.push(newExpression.value);
         document.getElementById("problem").innerText = newExpression.value;
-        for (element of document.getElementById("expression-container").querySelectorAll("*")) {
+        for (element of document.getElementById("expressions").querySelectorAll("*")) {
             element.removeAttribute("id");
         }
         newExpression.remove();
@@ -90,26 +91,37 @@ const specialKeysCheck = event => {
         nextExpression.setAttribute("class", "expression");
         nextExpression.innerHTML = next;
         document.querySelector("tbody").append(nextExpression);
+        const expContainer = document.getElementById("expression-container");
+        expContainer.scrollTo(0, expContainer.scrollHeight);
         resetListeners();
     }
 }
 
-const resetListeners = () => {
-    document.addEventListener("keydown", event => {
-        if (event.target.id !== "exp-input") {
-            specialKeysCheck(event);
-            if (validKeys.includes(event.key)) {
-                document.getElementById("exp-input").value += event.key;
-            }
+const addKey = event => {
+    if (event.target.id !== "exp-input") {
+        specialKeysCheck(event);
+        if (validKeys.includes(event.key)) {
+            document.getElementById("exp-input").value += event.key;
         }
-    });
-
-    document.getElementById("exp-input").addEventListener("keydown", event => {
+    } else {
         specialKeysCheck(event);
         if (!validKeys.includes(event.key) && !inputKeys.includes(event.key)) {
             event.preventDefault();
-        }
-    });
+        }            
+    }
+}
+
+const resetListeners = () => {
+    document.removeEventListener("keydown", addKey)
+
+    document.addEventListener("keydown", addKey);
+
+    // document.getElementById("exp-input").addEventListener("keydown", event => {
+    //     specialKeysCheck(event);
+    //     if (!validKeys.includes(event.key) && !inputKeys.includes(event.key)) {
+    //         event.preventDefault();
+    //     }
+    // });
 }
 
 
@@ -129,19 +141,25 @@ const calculate = expression => {
         let index = exp.indexOf("e");
         exp.splice(index, 1, Math.E);
     }
+    console.log("good");
 
     for (let i = 0; i < exp.length; i++) {
         if (typeof exp[i] === "number" && typeof exp[i+1] === "number") { return "invalid"; }
+        console.log("good");
         if (exp[i] === ")") { parenNum--; }
         else if (exp[i] === "(") { parenNum++; }
+        console.log("good");
         if (parenNum < 0) { return "invalid"; }
+        console.log("good");
         if (specials.includes(exp[i]) && (i+1 === exp.length || exp[i+1] !== "(")) { return "invalid"; }
         else if (i === 0 && ops.includes(exp[i])) { return "invalid"; }
         else if ((ops.includes(exp[i]) || exp[i] === "-") && (i+1 === exp.length || ops.includes(exp[i+1]))) { return "invalid"; }
+        console.log("good");
     }
     
     while (exp.length > 1) {
-        
+        console.log(exp);
+        // console.log("(");
         while (exp.includes("(")) {
             let parenNum = 1;
             let innerExp = [];
@@ -153,7 +171,8 @@ const calculate = expression => {
             }
             exp.splice(exp.indexOf("("), innerExp.length + 2, calculate(innerExp));
         }
-
+        
+        // console.log("(-)");
         let i = 0
         while (i < expression.length) {
             if (exp[i] === "-" && (i === 0 || typeof exp[i - 1] !== "number")) { exp.splice(i, 1, -1, "*"); }
@@ -165,60 +184,70 @@ const calculate = expression => {
 
         // for (char in specials) 
 
+        // console.log("s");
         while (exp.includes("s")) {
             let index = exp.indexOf("s");
             let add = Math.sin(exp[index + 1]);
             exp.splice(index, 2, add);            
         }
 
+        // console.log("c");
         while (exp.includes("c")) {
             let index = exp.indexOf("c");
             let add = Math.cos(exp[index + 1]);
             exp.splice(index, 2, add);
         }
 
+        // console.log("t");
         while (exp.includes("t")) {
             let index = exp.indexOf("t");
             let add = Math.tan(exp[index + 1]);
             exp.splice(index, 2, add);
         }
 
+        // console.log("S");
         while (exp.includes("S")) {
             let index = exp.indexOf("S");
             let add = Math.asin(exp[index + 1]);
             exp.splice(index, 2, add);
         }
 
+        // console.log("C");
         while (exp.includes("C")) {
             let index = exp.indexOf("C");
             let add = Math.acos(exp[index + 1]);
             exp.splice(index, 2, add);
         }
 
+        // console.log("T");
         while (exp.includes("T")) {
             let index = exp.indexOf("T");
             let add = Math.atan(exp[index + 1]);
             exp.splice(index, 2, add);
         }
 
+        // console.log("log10");
         while (exp.includes("l")) {
             let index = exp.indexOf("l");
             let add = Math.log10(exp[index + 1]);
             exp.splice(index, 2, add);
         }
 
+        // console.log("ln");
         while (exp.includes("n")) {
             let index = exp.indexOf("n");
             let add = Math.log(exp[index + 1]);
             exp.splice(index, 2, add);
         }
 
+        // console.log("^");
         while (exp.includes("^")) {
             let index = exp.indexOf("^");
             let add = exp[index - 1]**exp[index + 1];
-            exp.splice(index-1, 2, add);
+            exp.splice(index-1, 3, add);
         }
 
+        // console.log("*/");
         while (exp.includes("*") || exp.includes("/")) {
             let index = 0;
             if (exp.includes("*") && exp.includes("/")) { index = Math.min(exp.indexOf("*"), exp.indexOf("/")); }
@@ -232,6 +261,7 @@ const calculate = expression => {
             exp.splice(index-1, 3, add);
         }
 
+        // console.log("+-");
         while (exp.includes("+") || exp.includes("-")) {
             let index = 0;
             if (exp.includes("+") && exp.includes("-")) { index = Math.min(exp.indexOf("+"), exp.indexOf("-")); }
@@ -244,8 +274,10 @@ const calculate = expression => {
 
             exp.splice(index-1, 3, add);
         }
+        console.log(exp);
     }
 
+    console.log("num");
     if (exp.length === 0 || exp[0] === NaN || typeof exp[0] !== "number") { return "invalid" }
 
     const calculation = exp[0];
