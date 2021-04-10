@@ -43,14 +43,14 @@ p {
 }
 
 .problem {
-    border-top: 0.2rem solid;
+    border-bottom: 0.2rem solid;
     border-color: #205D9A;
     padding: 0.8rem 0.4rem;
     text-align: left;
 }
 
 .calculation {
-    border-top: 0.2rem solid;
+    border-bottom: 0.2rem solid;
     border-color: #205D9A;
     text-align: right;
 }
