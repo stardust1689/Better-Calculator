@@ -55,20 +55,16 @@ const specialKeysCheck = event => {
         event.preventDefault();
         document.getElementById("exp-input").value += "ln";
     } else if (event.key === "Enter") {
-        let newExpression = document.getElementById("exp-input");
+        let inputExpression = document.getElementById("exp-input");
 
-        const calculation = calculate(newExpression);
+        const calculation = calculate(inputExpression);
 
         document.getElementById("calculation").innerText = calculation;
 
         let nextIndex = activeIndex + 1;
+        turnOffIdsRemoveInput(inputExpression);
         if (activeIndex === expressions.length) {
-            document.getElementById("problem").innerText = newExpression.value;
-            for (element of document.getElementById("expressions").querySelectorAll("*")) {
-                if (element.className !== "expression") { element.removeAttribute("id"); }
-            }
-            newExpression.remove();
-            expressions.push(newExpression.value);
+            expressions.push(inputExpression.value);
             const next = '<td class="problem" id="problem"><input id="exp-input" autofocus></input></td><td class="calculation" id="calculation"></td>';
             const nextExpression = document.createElement("tr");
             nextExpression.setAttribute("class", "expression");
@@ -79,11 +75,6 @@ const specialKeysCheck = event => {
             expContainer.scrollTo(0, expContainer.scrollHeight);
             resetListeners();
         } else {
-            document.getElementById("problem").innerText = newExpression.value;
-            for (element of document.getElementById("expressions").querySelectorAll("*")) {
-                if (element.className !== "expression") { element.removeAttribute("id"); }
-            }
-            newExpression.remove();
             expressions.splice(activeIndex, 1, newExpression);
             let nextExpression = document.getElementById("p" + nextIndex);
             let nextExpressionText = nextExpression.children[0].innerText;
@@ -97,6 +88,14 @@ const specialKeysCheck = event => {
         
         activeIndex++;
     }
+}
+
+const turnOffIdsRemoveInput = inputExpression => {
+    document.getElementById("problem").innerText = inputExpression.value;
+    for (element of document.getElementById("expressions").querySelectorAll("*")) {
+        if (element.className !== "expression") { element.removeAttribute("id"); }
+    }
+    inputExpression.remove();
 }
 
 const addKey = event => {
@@ -113,34 +112,23 @@ const addKey = event => {
     }
 }
 
-const activateExpression = event => {
+const activateClickedExpression = event => {
     if (event.target.className === "problem") {
         currentExpression = document.getElementById("exp-input");
         let calculation = calculate(currentExpression);
         document.getElementById("calculation").innerText = calculation;
 
-        document.getElementById("problem").innerText = currentExpression.value;
-            for (element of document.getElementById("expressions").querySelectorAll("*")) {
-                if (element.className !== "expression") { element.removeAttribute("id"); }
-            }
-        currentExpression.remove();
+        turnOffIdsRemoveInput(currentExpression);
         
         let clickedExpression = event.target;
         let clickedExpressionText = event.target.innerText;
         clickedExpression.innerText = "";
         clickedExpression.innerHTML = '<input id="exp-input" autofocus></input>';
         document.getElementById("exp-input").value = clickedExpressionText;
-
-        for (let i = 0; i < document.getElementsByClassName("problem").length; i++) {
-            if (document.getElementsByClassName("problem")[i].firstChild.id === "exp-input") {
-                console.log('good');
-                activeIndex = i;
-                document.getElementsByClassName("problem")[i].setAttribute("id", "problem");
-                document.getElementsByClassName("calculation")[i].setAttribute("id", "calculation");
-                // LOOKIE something else
-                break;
-            }
-        }
+        
+        activeIndex = Number(clickedExpression.parentElement.id.slice(1));
+        clickedExpression.parentElement.children[0].id = "problem";
+        clickedExpression.parentElement.children[1].id = "calculation";
     }
 }
 
@@ -155,9 +143,9 @@ const resetListeners = () => {
 
     document.addEventListener("keydown", addKey);
 
-    document.removeEventListener("click", activateExpression);
+    document.removeEventListener("click", activateClickedExpression);
 
-    document.addEventListener("click", activateExpression);
+    document.addEventListener("click", activateClickedExpression);
 
     // document.removeEventListener("click", document.getElementById("expressions", look));
 
