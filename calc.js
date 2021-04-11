@@ -54,17 +54,23 @@ const specialKeysCheck = event => {
     } else if (event.key === "n") {
         event.preventDefault();
         document.getElementById("exp-input").value += "ln";
+    } else if (event.key === "a") {
+        event.preventDefault();
+        document.getElementById("exp-input").value += "ans";
     } else if (event.key === "Enter") {
         let inputExpression = document.getElementById("exp-input");
 
-        const calculation = calculate(inputExpression);
+        const calculation = calculate(inputExpression.value);
 
         document.getElementById("calculation").innerText = calculation;
 
         let nextIndex = activeIndex + 1;
-        turnOffIdsRemoveInput(inputExpression);
+
+        console.log(inputExpression);
+        
         if (activeIndex === expressions.length) {
             expressions.push(inputExpression.value);
+            turnOffIdsRemoveInput(inputExpression);
             const next = '<td class="problem" id="problem"><input id="exp-input" autofocus></input></td><td class="calculation" id="calculation"></td>';
             const nextExpression = document.createElement("tr");
             nextExpression.setAttribute("class", "expression");
@@ -75,7 +81,8 @@ const specialKeysCheck = event => {
             expContainer.scrollTo(0, expContainer.scrollHeight);
             resetListeners();
         } else {
-            expressions.splice(activeIndex, 1, newExpression);
+            expressions.splice(activeIndex, 1, inputExpression.value);
+            turnOffIdsRemoveInput(inputExpression);
             let nextExpression = document.getElementById("p" + nextIndex);
             let nextExpressionText = nextExpression.children[0].innerText;
             nextExpression.children[0].innerText = "";
@@ -115,10 +122,10 @@ const addKey = event => {
 const activateClickedExpression = event => {
     if (event.target.className === "problem") {
         currentExpression = document.getElementById("exp-input");
-        let calculation = calculate(currentExpression);
+        let calculation = calculate(currentExpression.value);
         document.getElementById("calculation").innerText = calculation;
-
         turnOffIdsRemoveInput(currentExpression);
+        expressions.splice(activeIndex, 1, currentExpression.value);
         
         let clickedExpression = event.target;
         let clickedExpressionText = event.target.innerText;
@@ -143,42 +150,50 @@ const resetListeners = () => {
 
     document.addEventListener("keydown", addKey);
 
-    document.removeEventListener("click", activateClickedExpression);
-
-    document.addEventListener("click", activateClickedExpression);
-
-    // document.removeEventListener("click", document.getElementById("expressions", look));
-
-    // document.addEventListener("click", document.getElementById("expressions", look));
-    // document.getElementById("exp-input").addEventListener("keydown", event => {
-    //     specialKeysCheck(event);
-    //     if (!validKeys.includes(event.key) && !inputKeys.includes(event.key)) {
-    //         event.preventDefault();
-    //     }
-    // });
+    for (element of document.getElementsByClassName("problem")) {
+        element.removeEventListener("click", activateClickedExpression);
+        element.addEventListener("click", activateClickedExpression);
+    }
 }
 
 
 const calculate = expression => {
-    if (expression.value === "") { return "invalid"; }
-    let exp = expression.value.replaceAll("asin", "S");
+    if (expression === "") { return "invalid"; }
+    // console.log(expression);
+    let exp = expression.replaceAll("asin", "S");
+    // console.log(exp);
     exp = exp.replaceAll("acos", "C");
+    // console.log(exp);
     exp = exp.replaceAll("atan", "T");
+    // console.log(exp);
     exp = exp.replaceAll("sin^-1", "S");
+    // console.log(exp);
     exp = exp.replaceAll("cos^-1", "C");
-    exp = exp.replaceAll("tan^-1", "T");        
+    // console.log(exp);
+    exp = exp.replaceAll("tan^-1", "T");
+    // console.log(exp);        
     exp = exp.replaceAll("sin", "s");
+    // console.log(exp);
     exp = exp.replaceAll("cos", "c");
+    // console.log(exp);
     exp = exp.replaceAll("tan", "t");
+    // console.log(exp);
     exp = exp.replaceAll("pi", "p");
+    // console.log(exp);
     exp = exp.replaceAll("log", "l");
+    // console.log(exp);
     exp = exp.replaceAll("ln", "n");
-    exp = exp.match(/[sctpeln()\+\-*\/\^]|\d+(\.\d+)?|\.\d+/g);
+    // console.log(exp);
+    exp = exp.replaceAll("ans", "a");
+    // console.log(exp);
+    exp = exp.match(/[sctpelna()\+\-*\/\^]|\d+(\.\d+)?|\.\d+/g);
+    // console.log(exp);
 
     exp = exp.map(char => {
         if (!isNaN(Number(char)) || char === ".") { return Number(char); }
         else { return char; }
     })
+    // console.log(exp);
 
     // let exp = expression.slice();
     const validStarts = "1234567890.(";
@@ -190,6 +205,17 @@ const calculate = expression => {
         let index = exp.indexOf("p");
         exp.splice(index, 1, Math.PI);
     }
+
+    // console.log(exp);
+    while (exp.includes("a")) {
+        let previousIndex = activeIndex - 1;
+        if (previousIndex === -1) { return "invalid"; }
+        let ans = Number(document.getElementById("p" + previousIndex).children[1].innerText);
+        if (isNaN(ans)) { return "invalid"; }
+        let index = exp.indexOf("a");
+        exp.splice(index, 1, ans);
+    }
+    // console.log(exp);
 
     while (exp.includes("e")) {
         let index = exp.indexOf("e");
@@ -324,6 +350,7 @@ const calculate = expression => {
         }
         // console.log(exp);
     }
+    // console.log(exp);
 
     // console.log("num");
     if (exp.length === 0 || exp[0] === NaN || typeof exp[0] !== "number") { return "invalid" }
