@@ -28,9 +28,21 @@ const inputKeys = [
     "ArrowLeft"
 ]
 
-let numbers = ("1234567890.")
+let numbers = "1234567890."
 
-// also, c, inv, deg/rad, Enter
+let degreeAdjustment = 1;
+
+// inv, deg/rad
+
+const addKey = event => {
+    if (event.target.id !== "exp-input") {
+        specialKeysCheck(event);
+        if (validKeys.includes(event.key)) { document.getElementById("exp-input").value += event.key; } 
+    } else {
+        specialKeysCheck(event);
+        if (!validKeys.includes(event.key) && !inputKeys.includes(event.key)) { event.preventDefault(); }            
+    }
+}
 
 const specialKeysCheck = event => {
     if (event.key === "s") {
@@ -57,7 +69,17 @@ const specialKeysCheck = event => {
     } else if (event.key === "a") {
         event.preventDefault();
         document.getElementById("exp-input").value += "ans";
-    } else if (event.key === "Enter") {
+    } else if (event.key === "d") {
+        event.preventDefault();
+        if (degreeAdjustment === 1) { degreeAdjustment = Math.PI / 180;}
+        else {degreeAdjustment = 1;}
+        console.log(degreeAdjustment);
+    } else if (event.key === "Backspace" && event.target.id !== "exp-input") {
+        console.log(event.key);
+        let exp = document.getElementById("exp-input").value;
+        document.getElementById("exp-input").value = exp.slice(0, exp.length - 1)
+    }
+    else if (event.key === "Enter") {
         let inputExpression = document.getElementById("exp-input");
 
         const calculation = calculate(inputExpression.value);
@@ -97,26 +119,23 @@ const specialKeysCheck = event => {
     }
 }
 
+const resetListeners = () => {
+    document.removeEventListener("keydown", addKey);
+
+    document.addEventListener("keydown", addKey);
+
+    for (element of document.getElementsByClassName("problem")) {
+        element.removeEventListener("click", activateClickedExpression);
+        element.addEventListener("click", activateClickedExpression);
+    }
+}
+
 const turnOffIdsRemoveInput = inputExpression => {
     document.getElementById("problem").innerText = inputExpression.value;
     for (element of document.getElementById("expressions").querySelectorAll("*")) {
         if (element.className !== "expression") { element.removeAttribute("id"); }
     }
     inputExpression.remove();
-}
-
-const addKey = event => {
-    if (event.target.id !== "exp-input") {
-        specialKeysCheck(event);
-        if (validKeys.includes(event.key)) {
-            document.getElementById("exp-input").value += event.key;
-        }
-    } else {
-        specialKeysCheck(event);
-        if (!validKeys.includes(event.key) && !inputKeys.includes(event.key)) {
-            event.preventDefault();
-        }            
-    }
 }
 
 const activateClickedExpression = event => {
@@ -145,21 +164,9 @@ const look = event => {
 
 document.getElementById("expressions").addEventListener("click", look);
 
-const resetListeners = () => {
-    document.removeEventListener("keydown", addKey);
-
-    document.addEventListener("keydown", addKey);
-
-    for (element of document.getElementsByClassName("problem")) {
-        element.removeEventListener("click", activateClickedExpression);
-        element.addEventListener("click", activateClickedExpression);
-    }
-}
-
-
 const calculate = expression => {
     if (expression === "") { return "invalid"; }
-    // console.log(expression);
+    console.log(expression);
     let exp = expression.replaceAll("asin", "S");
     // console.log(exp);
     exp = exp.replaceAll("acos", "C");
@@ -243,7 +250,7 @@ const calculate = expression => {
                 if (parenNum === 0) { break; }
                 innerExp.push(exp[i]);
             }
-            exp.splice(exp.indexOf("("), innerExp.length + 2, calculate(innerExp));
+            exp.splice(exp.indexOf("("), innerExp.length + 2, calculate(innerExp.join("")));
         }
         
         // console.log("(-)");
@@ -261,42 +268,42 @@ const calculate = expression => {
         // console.log("s");
         while (exp.includes("s")) {
             let index = exp.indexOf("s");
-            let add = Math.sin(exp[index + 1]);
+            let add = Math.sin(exp[index + 1] * degreeAdjustment);
             exp.splice(index, 2, add);            
         }
 
         // console.log("c");
         while (exp.includes("c")) {
             let index = exp.indexOf("c");
-            let add = Math.cos(exp[index + 1]);
+            let add = Math.cos(exp[index + 1] * degreeAdjustment);
             exp.splice(index, 2, add);
         }
 
         // console.log("t");
         while (exp.includes("t")) {
             let index = exp.indexOf("t");
-            let add = Math.tan(exp[index + 1]);
+            let add = Math.tan(exp[index + 1] * degreeAdjustment);
             exp.splice(index, 2, add);
         }
 
         // console.log("S");
         while (exp.includes("S")) {
             let index = exp.indexOf("S");
-            let add = Math.asin(exp[index + 1]);
+            let add = Math.asin(exp[index + 1]) * degreeAdjustment;
             exp.splice(index, 2, add);
         }
 
         // console.log("C");
         while (exp.includes("C")) {
             let index = exp.indexOf("C");
-            let add = Math.acos(exp[index + 1]);
+            let add = Math.acos(exp[index + 1]) * degreeAdjustment;
             exp.splice(index, 2, add);
         }
 
         // console.log("T");
         while (exp.includes("T")) {
             let index = exp.indexOf("T");
-            let add = Math.atan(exp[index + 1]);
+            let add = Math.atan(exp[index + 1]) * degreeAdjustment;
             exp.splice(index, 2, add);
         }
 
@@ -374,20 +381,18 @@ const roundOff = (num, places) => {
     return Math.round(num * n) / n;
 } 
 
-const calcSin = exp => Math.sin(calculate(exp));
+const calcSin = exp => Math.sin(calculate(exp) * degreeAdjustment);
 
-const calcCos = exp => Math.cos(calculate(exp));
+const calcCos = exp => Math.cos(calculate(exp) * degreeAdjustment);
 
-const calcTan = exp => Math.tan(calculate(exp));
+const calcTan = exp => Math.tan(calculate(exp) * degreeAdjustment);
 
-const calcLog10 = exp => Math.log10(calculate(exp));
+const calcLog10 = exp => Math.log10(calculate(exp) * degreeAdjustment);
 
-const calcLn = exp => Math.log(calculate(exp));
+const calcLn = exp => Math.log(calculate(exp) * degreeAdjustment);
+
+resetListeners();
 
 let exp = [2,"+",2]
 let exp2 = ["(", 1, "-", 3, "*", "l", "(", 2, "/", 3, "-", 1, ")", "+", 2, "+", "e", ")", "*", 2, "-", "(", 2, "+",1, "*", 3, "*", "(" , 3, "+", 1, "-", 1, ")", ")", "^", 2]
 let exp3 = ["-", 4, "+", "s", "(", 45, "*", "p", "*", "(", 2, ")", "*", "l", "(", 104, ")", ")", "+", "e"]
-// let exp2 = [1, "-", 3]
-
-// ***/-+++
-resetListeners();
