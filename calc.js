@@ -66,6 +66,9 @@ const specialKeysCheck = event => {
     } else if (event.key === "n") {
         event.preventDefault();
         document.getElementById("exp-input").value += "ln";
+    } else if (event.key === "v") {
+        event.preventDefault();
+        document.getElementById("exp-input").value += "^-1";
     } else if (event.key === "a") {
         event.preventDefault();
         document.getElementById("exp-input").value += "ans";
@@ -164,6 +167,177 @@ const look = event => {
 
 document.getElementById("expressions").addEventListener("click", look);
 
+let buttonInputs = {
+    "tan": "tan",
+    "cos": "cos",
+    "sin": "sin",
+    "pi": "pi",
+    "e-exponent": "e^",
+    "ln": "ln",
+    "log10": "log",
+    "exponent": "^",
+    "inverse": "^-1",
+    "square": "^2",
+    "parentheses-open": "(",
+    "parentheses-close": ")",
+    "plus": "+",
+    "minus": "-",
+    "multiply": "*",
+    "divide": "/",
+    "ans": "ans",
+    "decimal": ".",
+    "nine": "9",
+    "eight": "8",
+    "seven": "7",
+    "six": "6",
+    "five": "5",
+    "four": "4",
+    "three": "3",
+    "two": "2",
+    "one": "1",
+    "zero": "0"
+};
+
+for (let button in buttonInputs) {
+    document.getElementById(button).children[0].addEventListener("click", () => {
+        document.getElementById("exp-input").value += buttonInputs[button];
+    });
+}
+
+document.getElementById("back").addEventListener("click", () => {
+    document.getElementById("exp-input").dispatchEvent("keydown", {key: "LeftArrow"});
+})
+
+// for (button of document.getElementsByClassName("button")) {
+//     button.addEventListener("click", event => {
+//         console.log(event.target.parentElement.id);
+//         document.getElementById("exp-input").value += buttonInputs[event.target.parentElement.id]
+//     })
+// }
+
+// document.getElementById("tan").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("cos").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("sin").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("pi").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("e-exponent").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("ln").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("log10").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("exponent").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("inverse").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("square").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("plus").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("minus").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("multiply").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("divide").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("decimal").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("nine").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("eight").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("seven").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("six").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("five").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("four").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("three").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("two").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("one").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// document.getElementById("zero").children[0].addEventListener("click", event => {
+//     console.log(event.target.parentElement.id)
+// });
+
+// for (button in buttonInputs) {
+//     document.getElementById(button).children[0].addEventListener("click", event => {
+//         console.log(event.target.parentElement.id);
+//         // document.getElementById("exp-input").value += buttonInputs[event.target.parentElement.id]
+//     })
+// }
+
+// for (let i = 0; i < Object.keys(buttonInputs).length; i++) {
+//     document.getElementsByClassName("button")[i].children[0].addEventListener("click", event => {
+//         console.log(event.target.parentElement.id);
+//         // document.getElementById("exp-input").value += buttonInputs[event.target.parentElement.id]
+//     })
+// }
+
+// for (let button in buttonInputs) {
+//     document.getElementById(button).children[0].addEventListener("click", event => {
+//         console.log(event.target.parentElement.id);
+//         // document.getElementById("exp-input").value += buttonInputs[event.target.parentElement.id]
+//     })
+// }
+
+
+
 const calculate = expression => {
     if (expression === "") { return "invalid"; }
     console.log(expression);
@@ -202,7 +376,6 @@ const calculate = expression => {
     })
     // console.log(exp);
 
-    // let exp = expression.slice();
     const validStarts = "1234567890.(";
     const specials = "sctSCTln";
     const ops = "+*/^";

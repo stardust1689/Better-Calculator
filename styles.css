@@ -79,159 +79,164 @@ input {
     width: 2.5rem;
 }
 
-.clear {
+#clear {
     height: 6.65rem;
     top: 0;
     left: 0;
 }
 
-.back {
-    height: 6.65rem;
+#back {
+    height: 3.325rem;
     top: 6.65rem;
     left: 0;
 }
 
-.rad-deg {
+#pi {
+    top: 9.975rem;
+    left: 0;
+}
+
+#deg-rad {
     top: 0;
     left: 2.5rem;
 }
 
-.tan {
+#tan {
     top: 3.325rem;
     left: 2.5rem;
 }
 
-.cos {
+#cos {
     top: 6.65rem;
     left: 2.5rem;
 }
 
-.sin {
+#sin {
     top: 9.975rem;
     left: 2.5rem;
 }
 
-.pi {
-    top:0;
+#e-exponent {
+    top: 0;
     left: 5rem;
 }
 
-.e-exponent {
+#ln {
     top: 3.325rem;
     left: 5rem;
 }
 
-.ln {
+#log10 {
     top: 6.65rem;
     left: 5rem;
 }
 
-.log10 {
+#parentheses-open {
     top: 9.975rem;
     left: 5rem;
 }
 
-.exponent {
+#exponent {
     top: 0rem;
     left: 7.5rem;
 }
 
-.inverse {
+#inverse {
     top: 3.325rem;
     left: 7.5rem;
 }
 
-.square {
+#square {
     top: 6.65rem;
     left: 7.5rem;
 }
 
-.parantheses {
+#parentheses-close {
     top: 9.975rem;
     left: 7.5rem;
 }
 
-.seven {
+#seven {
     top: 0;
     left: 10rem;
 }
 
-.four {
+#four {
     top: 3.325rem;
     left: 10rem;
 }
 
-.one {
+#one {
     top: 6.65rem;
     left: 10rem;
 }
 
-.zero {
+#zero {
     top: 9.975rem;
     left: 10rem;
 }
 
-.eight {
+#eight {
     top: 0;
     left: 12.5rem;
 }
 
-.five {
+#five {
     top:3.325rem;
     left: 12.5rem;
 }
 
-.two {
+#two {
     top: 6.65rem;
     left: 12.5rem;
 }
 
-.decimal {
+#decimal {
     top: 9.975rem;
     left: 12.5rem;
 }
 
-.nine {
+#nine {
     top: 0;
     left: 15rem;
 }
 
-.six {
+#six {
     top: 3.325rem;
     left: 15rem;
 }
 
-.three {
+#three {
     top: 6.65rem;
     left: 15rem;
 }
 
-.ans {
+#ans {
     top: 9.975rem;
     left: 15rem;
 }
 
-.divide {
+#divide {
     top: 0;
     left: 17.5rem;
 }
 
-.multiply {
+#multiply {
     top: 3.325rem;
     left: 17.5rem;
 }
 
-.minus {
+#minus {
     top: 6.65rem;
     left: 17.5rem;
 }
 
-.plus {
+#plus {
     top: 9.975rem;
     left: 17.5rem;
 }
 
-.equal {
+#equal {
     height: 13.3rem;
     top: 0;
     left: 20rem;
@@ -263,9 +268,9 @@ input {
     height: 12.75rem;
 }
 
-.back > * {
-    height: 6.1rem;
-}
+/* .back > * {
+    height: 3.05rem;
+} */
 
 .clear > * {
     height: 6.1rem;
