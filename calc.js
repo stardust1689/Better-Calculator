@@ -83,43 +83,50 @@ const specialKeysCheck = event => {
         document.getElementById("exp-input").value = exp.slice(0, exp.length - 1)
     }
     else if (event.key === "Enter") {
-        let inputExpression = document.getElementById("exp-input");
-
-        const calculation = calculate(inputExpression.value);
-
-        document.getElementById("calculation").innerText = calculation;
-
-        let nextIndex = activeIndex + 1;
-
-        console.log(inputExpression);
-        
-        if (activeIndex === expressions.length) {
-            expressions.push(inputExpression.value);
-            turnOffIdsRemoveInput(inputExpression);
-            const next = '<td class="problem" id="problem"><input id="exp-input" autofocus></input></td><td class="calculation" id="calculation"></td>';
-            const nextExpression = document.createElement("tr");
-            nextExpression.setAttribute("class", "expression");
-            nextExpression.setAttribute("id", "p" + nextIndex);
-            nextExpression.innerHTML = next;
-            document.querySelector("tbody").append(nextExpression);
-            const expContainer = document.getElementById("expression-container");
-            expContainer.scrollTo(0, expContainer.scrollHeight);
-            resetListeners();
-        } else {
-            expressions.splice(activeIndex, 1, inputExpression.value);
-            turnOffIdsRemoveInput(inputExpression);
-            let nextExpression = document.getElementById("p" + nextIndex);
-            let nextExpressionText = nextExpression.children[0].innerText;
-            nextExpression.children[0].innerText = "";
-            nextExpression.children[0].innerHTML = '<input id="exp-input" autofocus></input>';
-            document.getElementById("exp-input").value = nextExpressionText;
-            nextExpression.children[0].setAttribute("id", "problem");
-            nextExpression.children[1].setAttribute("id", "calculation");
-            // LOOKIE put additional calculations here.
-        }
-        
-        activeIndex++;
+        executeInput();
     }
+}
+
+const executeInput = () => {
+    let inputExpression = document.getElementById("exp-input");
+    expressions.splice(activeIndex, 1, inputExpression.value);
+    
+    // const calculations = expressions.slice(activeIndex).map(expression, calculate(expression));
+    for (let i = activeIndex; i < expressions.length; i++) {
+        document.getElementById("p" + i).children[1].innerText = calculate(expressions[i], i);
+    }
+
+    // document.getElementById("calculation").innerText = calculation;
+
+    let nextIndex = activeIndex + 1;
+
+    turnOffIdsRemoveInput(inputExpression);
+    console.log(inputExpression);
+    
+    if (nextIndex === expressions.length) {
+        // expressions.push(inputExpression.value);
+        const next = '<td class="problem" id="problem"><input id="exp-input" autofocus></input></td><td class="calculation" id="calculation"></td>';
+        const nextExpression = document.createElement("tr");
+        nextExpression.setAttribute("class", "expression");
+        nextExpression.setAttribute("id", "p" + nextIndex);
+        nextExpression.innerHTML = next;
+        document.querySelector("tbody").append(nextExpression);
+        const expContainer = document.getElementById("expression-container");
+        expContainer.scrollTo(0, expContainer.scrollHeight);
+        resetListeners();
+    } else {
+        // expressions.splice(activeIndex, 1, inputExpression.value);
+        let nextExpression = document.getElementById("p" + nextIndex);
+        let nextExpressionText = nextExpression.children[0].innerText;
+        nextExpression.children[0].innerText = "";
+        nextExpression.children[0].innerHTML = '<input id="exp-input" autofocus></input>';
+        document.getElementById("exp-input").value = nextExpressionText;
+        nextExpression.children[0].setAttribute("id", "problem");
+        nextExpression.children[1].setAttribute("id", "calculation");
+        // LOOKIE put additional calculations here.
+    }
+    
+    activeIndex++;
 }
 
 const resetListeners = () => {
@@ -144,10 +151,11 @@ const turnOffIdsRemoveInput = inputExpression => {
 const activateClickedExpression = event => {
     if (event.target.className === "problem") {
         currentExpression = document.getElementById("exp-input");
-        let calculation = calculate(currentExpression.value);
-        document.getElementById("calculation").innerText = calculation;
-        turnOffIdsRemoveInput(currentExpression);
         expressions.splice(activeIndex, 1, currentExpression.value);
+        for (let i = activeIndex; i < expressions.length; i++) {
+            document.getElementById("p" + i).children[1].innerText = calculate(expressions[i]);
+        }
+        turnOffIdsRemoveInput(currentExpression);
         
         let clickedExpression = event.target;
         let clickedExpressionText = event.target.innerText;
@@ -204,9 +212,7 @@ for (let button in buttonInputs) {
     });
 }
 
-document.getElementById("back").addEventListener("click", () => {
-    document.getElementById("exp-input").dispatchEvent("keydown", {key: "LeftArrow"});
-})
+document.getElementById("equal").addEventListener("click", executeInput)
 
 // for (button of document.getElementsByClassName("button")) {
 //     button.addEventListener("click", event => {
@@ -338,9 +344,9 @@ document.getElementById("back").addEventListener("click", () => {
 
 
 
-const calculate = expression => {
+const calculate = (expression, expIndex) => {
+    // console.log(expression);
     if (expression === "") { return "invalid"; }
-    console.log(expression);
     let exp = expression.replaceAll("asin", "S");
     // console.log(exp);
     exp = exp.replaceAll("acos", "C");
@@ -388,8 +394,8 @@ const calculate = expression => {
 
     // console.log(exp);
     while (exp.includes("a")) {
-        let previousIndex = activeIndex - 1;
-        if (previousIndex === -1) { return "invalid"; }
+        let previousIndex = expIndex - 1;
+        if (previousIndex === -1) { console.log("here"); return "invalid"; }
         let ans = Number(document.getElementById("p" + previousIndex).children[1].innerText);
         if (isNaN(ans)) { return "invalid"; }
         let index = exp.indexOf("a");
