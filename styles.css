@@ -80,12 +80,18 @@ input {
 }
 
 #clear {
-    height: 6.65rem;
+    height: 3.325rem;
     top: 0;
     left: 0;
 }
 
-#back {
+#up {
+    height: 3.325rem;
+    top: 3.325rem;
+    left: 0;
+}
+
+#down {
     height: 3.325rem;
     top: 6.65rem;
     left: 0;
