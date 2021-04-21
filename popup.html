@@ -13,6 +13,9 @@
                 <tbody></tbody>
             </table>
         </div>
+        <div class="deg-rad-indicator">
+            <p class="indicator"><strong><span id="degrees">degrees</span> <span style="border: 0.15rem solid #D6EAF0" id="radians">radians</span></strong></p>
+        </div>
         <div class="buttons">
             <div id="clear">
                 <div class="button">
@@ -21,12 +24,12 @@
             </div>
             <div id="up">
                 <div class="button">
-                    <p><=</p>
+                    <p>↑</p>
                 </div>
             </div>
             <div id="down">
                 <div class="button">
-                    <p><=</p>
+                    <p>↓</p>
                 </div>
             </div>
             <div id="deg-rad">
@@ -179,6 +182,13 @@
                 <div class="button">
                     <p>=</p>
                 </div>
+            </div>
+        </div>
+        <div id="clear-div" style="display: none;">
+            <div id="clear-box">
+                <p id="confirmation">Clear all expressions?</p>
+                <button class="btn" id="no">No</button>
+                <button class="btn" id="yes">Yes</button>
             </div>
         </div>
     </div>

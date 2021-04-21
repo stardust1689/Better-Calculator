@@ -14,10 +14,42 @@ p {
 .calculator {
     /* position: relative; */
     width: 22.5rem;
-    height: 33.75rem;
+    height: 35.4rem;
     background-color: #000F1E;
     display: flex;
     flex-direction: column;
+}
+
+#clear-div {
+    position: absolute;
+    top: 21.74rem;
+    width: 22.5rem;
+    height: 13.3rem;
+    background-color: transparent;
+}
+
+#clear-box {
+    position: absolute;
+    height: 5rem;
+    width: 98%;
+    border: 0.2rem #205D9A solid;
+    background-color: #000F1E;
+}
+
+#confirmation {
+    color: #D6EAF0;
+    transform: translate(-50%, -100%);
+}
+
+#no {
+    position: absolute;
+    top: 2.5rem;
+    right: 51%;
+}
+#yes {
+    position: absolute;
+    top: 2.5rem;
+    left: 51%;
 }
 
 .expression-container {
@@ -66,6 +98,28 @@ input {
    color: #D6EAF0;
 }
 
+.deg-rad-indicator {
+    border-top: 0.1rem solid;
+    border-color: #205D9A;
+    height: 1.5rem;
+    position: relative;
+}
+
+.indicator {
+    color: #D6EAF0;
+    text-align: left;
+    font-size: small;
+    left: 15%;
+}
+
+/* .degrees {
+
+} */
+
+/* .radians {
+    border: 0.15rem solid #D6EAF0;
+} */
+
 .buttons {
     border-top: 0.2rem solid;
     border-color: #205D9A;
@@ -97,11 +151,6 @@ input {
     left: 0;
 }
 
-#pi {
-    top: 9.975rem;
-    left: 0;
-}
-
 #deg-rad {
     top: 0;
     left: 2.5rem;
@@ -120,6 +169,11 @@ input {
 #sin {
     top: 9.975rem;
     left: 2.5rem;
+}
+
+#pi {
+    top: 9.975rem;
+    left: 0;
 }
 
 #e-exponent {
