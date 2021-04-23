@@ -48,6 +48,10 @@ const validKeys = [
     "^"
 ];
 
+document.addEventListener("keydown", event => {
+    console.log(event);
+})
+
 const inputKeys = [
     "Backspace",
     "ArrowRight",
@@ -60,10 +64,10 @@ let numbers = "1234567890."
 
 let degreeAdjustment = 1;
 
-// inv, deg/rad
-
 const addKey = event => {
-    if (event.target.id !== "exp-input") {
+    if (event.type === "keydown" && (event.ctrlKey || (event.shiftKey && ((event.key === "c" || event.key === "v"))))) {
+        return;
+    } else if (event.target.id !== "exp-input") {
         specialKeysCheck(event);
         if (validKeys.includes(event.key)) { document.getElementById("exp-input").value += event.key; } 
     } else {
@@ -76,12 +80,21 @@ const specialKeysCheck = event => {
     if (event.key === "s") {
         event.preventDefault();
         document.getElementById("exp-input").value += "sin";  
-    } else if (event.key === "c") {
+    } else if (event.key === "o") {
         event.preventDefault();
         document.getElementById("exp-input").value += "cos";  
     } else if (event.key === "t") {
         event.preventDefault();
         document.getElementById("exp-input").value += "tan";
+    } else if (event.key === "S") {
+        event.preventDefault();
+        document.getElementById("exp-input").value += "sin^-1";
+    } else if (event.key === "O") {
+        event.preventDefault();
+        document.getElementById("exp-input").value += "cos^-1";
+    } else if (event.key === "T") {
+        event.preventDefault();
+        document.getElementById("exp-input").value += "tan^-1";
     } else if (event.key === "p") {
         event.preventDefault();
         document.getElementById("exp-input").value += "pi";       
@@ -94,7 +107,7 @@ const specialKeysCheck = event => {
     } else if (event.key === "n") {
         event.preventDefault();
         document.getElementById("exp-input").value += "ln";
-    } else if (event.key === "v") {
+    } else if (event.key === "i") {
         event.preventDefault();
         document.getElementById("exp-input").value += "^-1";
     } else if (event.key === "a") {
@@ -180,7 +193,7 @@ const resetListeners = () => {
 }
 
 // const activateClickedExpression 
-const activateExpression = event => {
+const activateExpression = (event, upDownButton=false) => {
     if (event.type === "click" && event.target.className === "problem") {
         console.log("going");
         currentExpression = document.getElementById("exp-input");
@@ -199,10 +212,12 @@ const activateExpression = event => {
         activeIndex = Number(clickedExpression.parentElement.id.slice(1));
         clickedExpression.parentElement.children[0].id = "problem";
         clickedExpression.parentElement.children[1].id = "calculation";
-    } else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+    } else if (event.key === "ArrowUp" || event.key === "ArrowDown" || upDownButton) {
+        console.log("good");
         let expressionToActivate = document.getElementById("p" + activeIndex).children[0];
         console.log(expressionToActivate);
         let expressionText = expressionToActivate.innerText;
+        console.log(expressionText);
         expressionToActivate.innerText = "";
         expressionToActivate.innerHTML = '<input id="exp-input" autofocus></input>';
         document.getElementById("exp-input").value = expressionText;
@@ -220,6 +235,7 @@ const look = event => {
 document.addEventListener("click", event => {
     console.log(event.type);
     console.log(event.target.className);
+    console.log(event.target.id)
 });
 
 let buttonInputs = {
@@ -288,6 +304,25 @@ document.getElementById("equal").addEventListener("click", executeInput);
 //         // document.getElementById("exp-input").value += buttonInputs[event.target.parentElement.id]
 //     })
 // }
+
+document.getElementById("up").addEventListener("click", event => {
+    if (activeIndex !== 0) {
+        executeInput(createNew=false);
+        activeIndex--;
+        activateExpression(event, upDownButton=true)
+        const expContainer = document.getElementById("expression-container");
+        const currentExpression = document.getElementById("p" + activeIndex);
+        expContainer.scrollTo(0, currentExpression.scrollHeight);
+    }
+});
+
+document.getElementById("down").addEventListener("click", event => {
+    if (activeIndex !== highestExpressionId) {
+        executeInput(createNew=false);
+        activeIndex++;
+        activateExpression(event, upDownButton=true)
+    }        
+});
 
 document.getElementById("clear").addEventListener("click", () => {
     document.getElementById("clear-div").style.display = "block";
@@ -358,7 +393,7 @@ const calculate = (expression, expIndex) => {
     // console.log(exp);
     exp = exp.replaceAll("ans", "a");
     // console.log(exp);
-    exp = exp.match(/[sctpelna()\+\-*\/\^]|\d+(\.\d+)?|\.\d+/g);
+    exp = exp.match(/[SCTsctpelna()\+\-*\/\^]|\d+(\.\d+)?|\.\d+/g);
     // console.log(exp);
 
     exp = exp.map(char => {
@@ -441,7 +476,12 @@ const calculate = (expression, expIndex) => {
         // console.log("t");
         while (exp.includes("t")) {
             let index = exp.indexOf("t");
-            let add = Math.tan(exp[index + 1] * degreeAdjustment);
+            let undefinedCheck = exp[index + 1] * degreeAdjustment / (Math.PI / 2);
+            if (Number(undefinedCheck.toFixed(7)) === Math.round(undefinedCheck)) {
+                return "!";
+            }
+            // console.log("quotient: " + `${}`);
+            let add = Math.tan(exp[index + 1] * degreeAdjustment)
             exp.splice(index, 2, add);
         }
 
@@ -449,6 +489,7 @@ const calculate = (expression, expIndex) => {
         while (exp.includes("S")) {
             let index = exp.indexOf("S");
             let add = Math.asin(exp[index + 1]) * degreeAdjustment;
+            if (isNaN(add)) { return "!"; }
             exp.splice(index, 2, add);
         }
 
@@ -456,6 +497,7 @@ const calculate = (expression, expIndex) => {
         while (exp.includes("C")) {
             let index = exp.indexOf("C");
             let add = Math.acos(exp[index + 1]) * degreeAdjustment;
+            if (isNaN(add)) { return "!"; }
             exp.splice(index, 2, add);
         }
 
@@ -463,6 +505,7 @@ const calculate = (expression, expIndex) => {
         while (exp.includes("T")) {
             let index = exp.indexOf("T");
             let add = Math.atan(exp[index + 1]) * degreeAdjustment;
+            if (isNaN(add)) { return "!"; }
             exp.splice(index, 2, add);
         }
 
