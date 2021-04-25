@@ -1,0 +1,349 @@
+body {
+    margin: 0;
+}
+
+p {
+    font-family: Arial, sans serif;
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.calculator {
+    /* position: relative; */
+    width: 22.5rem;
+    height: 36.6rem;
+    background-color: #000F1E;
+    display: flex;
+    flex-direction: column;
+    border: 0.2rem #205D9A solid;
+}
+
+#clear-div {
+    position: absolute;
+    top: 21.74rem;
+    width: 22.5rem;
+    height: 13.3rem;
+    background-color: transparent;
+}
+
+#clear-box {
+    position: absolute;
+    height: 5rem;
+    width: 98%;
+    border: 0.2rem #205D9A solid;
+    background-color: #000F1E;
+}
+
+#confirmation {
+    color: #D6EAF0;
+    transform: translate(-50%, -100%);
+}
+
+#no {
+    position: absolute;
+    top: 2.5rem;
+    right: 51%;
+}
+#yes {
+    position: absolute;
+    top: 2.5rem;
+    left: 51%;
+}
+
+.expression-container {
+    position: relative;
+    height: 20.25rem;
+    overflow-y: auto;
+}
+
+#expressions {
+    position: absolute;
+    /* bottom: 0; */
+    top: 0;
+    width: 100%;
+    height: 3.325rem;
+}
+
+.expression {
+    margin: auto;
+    padding: 1rem;
+    color: #D6EAF0;
+    font: "Times New Roman";
+    font-size: 1.25rem;
+}
+
+.problem {
+    border-bottom: 0.2rem solid;
+    border-color: #205D9A;
+    padding: 0.4rem;
+    text-align: left;
+}
+
+.calculation {
+    border-bottom: 0.2rem solid;
+    border-color: #205D9A;
+    text-align: right;
+}
+
+/* .wide {
+    width: 95%;
+    margin: auto;
+    font-size: 1.25rem;
+} */
+
+input {
+   background-color: #000F1E;
+   color: #D6EAF0;
+}
+
+.deg-rad-indicator {
+    border-top: 0.1rem solid;
+    border-color: #205D9A;
+    height: 1.5rem;
+    position: relative;
+}
+
+.indicator {
+    color: #D6EAF0;
+    text-align: left;
+    font-size: small;
+    left: 15%;
+}
+
+/* .degrees {
+
+} */
+
+/* .radians {
+    border: 0.15rem solid #D6EAF0;
+} */
+
+.buttons {
+    border-top: 0.2rem solid;
+    border-color: #205D9A;
+    height: 13.3rem;
+    position: relative;
+}
+
+.buttons > * {
+    position: absolute;
+    height: 3.325rem;
+    width: 2.5rem;
+}
+
+#clear {
+    height: 3.325rem;
+    top: 0;
+    left: 0;
+}
+
+#up {
+    height: 3.325rem;
+    top: 3.325rem;
+    left: 0;
+}
+
+#down {
+    height: 3.325rem;
+    top: 6.65rem;
+    left: 0;
+}
+
+#deg-rad {
+    top: 0;
+    left: 2.5rem;
+}
+
+#tan {
+    top: 3.325rem;
+    left: 2.5rem;
+}
+
+#cos {
+    top: 6.65rem;
+    left: 2.5rem;
+}
+
+#sin {
+    top: 9.975rem;
+    left: 2.5rem;
+}
+
+#pi {
+    top: 9.975rem;
+    left: 0;
+}
+
+#e-exponent {
+    top: 0;
+    left: 5rem;
+}
+
+#ln {
+    top: 3.325rem;
+    left: 5rem;
+}
+
+#log10 {
+    top: 6.65rem;
+    left: 5rem;
+}
+
+#parentheses-open {
+    top: 9.975rem;
+    left: 5rem;
+}
+
+#exponent {
+    top: 0rem;
+    left: 7.5rem;
+}
+
+#inverse {
+    top: 3.325rem;
+    left: 7.5rem;
+}
+
+#square {
+    top: 6.65rem;
+    left: 7.5rem;
+}
+
+#parentheses-close {
+    top: 9.975rem;
+    left: 7.5rem;
+}
+
+#seven {
+    top: 0;
+    left: 10rem;
+}
+
+#four {
+    top: 3.325rem;
+    left: 10rem;
+}
+
+#one {
+    top: 6.65rem;
+    left: 10rem;
+}
+
+#zero {
+    top: 9.975rem;
+    left: 10rem;
+}
+
+#eight {
+    top: 0;
+    left: 12.5rem;
+}
+
+#five {
+    top:3.325rem;
+    left: 12.5rem;
+}
+
+#two {
+    top: 6.65rem;
+    left: 12.5rem;
+}
+
+#decimal {
+    top: 9.975rem;
+    left: 12.5rem;
+}
+
+#nine {
+    top: 0;
+    left: 15rem;
+}
+
+#six {
+    top: 3.325rem;
+    left: 15rem;
+}
+
+#three {
+    top: 6.65rem;
+    left: 15rem;
+}
+
+#ans {
+    top: 9.975rem;
+    left: 15rem;
+}
+
+#divide {
+    top: 0;
+    left: 17.5rem;
+}
+
+#multiply {
+    top: 3.325rem;
+    left: 17.5rem;
+}
+
+#minus {
+    top: 6.65rem;
+    left: 17.5rem;
+}
+
+#plus {
+    top: 9.975rem;
+    left: 17.5rem;
+}
+
+#equal {
+    height: 13.3rem;
+    top: 0;
+    left: 20rem;
+}
+
+.buttons > * > * {
+    position: absolute;
+    border: 0.125rem solid #205D9A;
+    border-radius: 0.25rem;
+    color: #D6EAF0;
+    height: 2.775rem;
+    width: 1.95rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.number {
+    border: 0.125rem solid #D6EAF0;
+    background-color: #D6EAF0;
+    color: black;
+}
+
+.inv {
+    font-size: 0.775rem;
+}
+
+.equal > * {
+    height: 12.75rem;
+}
+
+/* .back > * {
+    height: 3.05rem;
+} */
+
+.clear > * {
+    height: 6.1rem;
+}
+
+.help {
+    height: 1.5rem;
+    border-top: 0.2rem solid #205D9A;
+}
+
+.btn-bottom {
+    color: #D6EAF0;
+    background-color: #000F1E;
+}
+
