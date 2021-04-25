@@ -1,4 +1,4 @@
-# Project-Riemann
+# Better Calculator
 Web extension that features a calculator straight from the web toolbar.
 
 - Calculator includes basic arithmetic ( + - * / ) plus exponents, trigonometry, and logarithms.
