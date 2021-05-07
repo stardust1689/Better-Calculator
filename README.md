@@ -29,4 +29,4 @@ INSTALLATION:
   - You should now see a new icon in your toolbar that resembles "π". If not, click the "Extensions" icon in the toolbar, find "Better Calculator Extension", and make sure the pin next to it is lit.
   - DONE! Now you can open the calculator by just clicking on the new icon on your toolbar (shaped like a "π") and calculate away!
 
-The Better Calculator responds to both clickable buttons and keyboard commands. Many of the key commands are easily found, but some might not be. Click the "Help!" button if you are not sure. Also, feel free to visit my website!
+The Better Calculator responds to both clickable buttons and keyboard commands. Many of the key commands are easily found, but some might not be. Click the "Help!" button if you are not sure. Also, feel free to visit my website (stardust1689.github.io/Personal-Website/)!
