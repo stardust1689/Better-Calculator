@@ -88,12 +88,6 @@ p {
     text-align: right;
 }
 
-/* .wide {
-    width: 95%;
-    margin: auto;
-    font-size: 1.25rem;
-} */
-
 input {
    background-color: #000F1E;
    color: #D6EAF0;
@@ -113,13 +107,18 @@ input {
     left: 15%;
 }
 
-/* .degrees {
-
-} */
-
-/* .radians {
-    border: 0.15rem solid #D6EAF0;
-} */
+#clear-all {
+    position: absolute;
+    right: 10%;
+    background-color: #FF2C1B;
+    width: 6.5rem;
+    height: 1.2rem;
+    border: solid 0.1rem #FF2C1B;
+    border-radius: 0.2rem;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 18px;
+}
 
 .buttons {
     border-top: 0.2rem solid;

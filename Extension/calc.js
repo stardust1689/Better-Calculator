@@ -47,7 +47,9 @@ const keyInput = event => {
         return;
     } else if (event.target.id !== "exp-input") {
         if (validKeys.includes(event.key)) { 
-            return; 
+            if (event.key.length === 1) {
+                addSpecial(event.key, 1);
+            }; 
         } else if (specialKeys.includes(event.key)) {
             specialKeysCheck(event);
         }
@@ -632,6 +634,10 @@ document.getElementById("down").addEventListener("click", event => {
 });
 
 document.getElementById("clear").addEventListener("click", () => {
+    document.getElementById("exp-input").value = "";
+});
+
+document.getElementById("clear-all").addEventListener("click", () => {
     document.getElementById("clear-div").style.display = "block";
     document.removeEventListener("keydown", keyInput);
 });
