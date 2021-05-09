@@ -46,11 +46,10 @@ const keyInput = event => {
     if (event.type === "keydown" && ((event.ctrlKey || (event.shiftKey && ((event.key === "c" || event.key === "v")))) || event.key === "Home" || event.key === "End")) {
         return;
     } else if (event.target.id !== "exp-input") {
-        if (validKeys.includes(event.key)) { 
-            if (event.key.length === 1) {
-                addSpecial(event.key, 1);
-                window.localStorage.setItem("value", document.getElementById("exp-input").value);
-            }; 
+        if (validKeys.includes(event.key) && event.key.length === 1) {
+            event.preventDefault();
+            addSpecial(event.key, 1);
+            window.localStorage.setItem("value", document.getElementById("exp-input").value);
         } else if (specialKeys.includes(event.key)) {
             specialKeysCheck(event);
             window.localStorage.setItem("value", document.getElementById("exp-input").value);
@@ -62,7 +61,6 @@ const keyInput = event => {
             } else {
                 window.localStorage.setItem("value", document.getElementById("exp-input").value);
             }
-            return;
         } else if (specialKeys.includes(event.key)) {
             specialKeysCheck(event);
             window.localStorage.setItem("value", document.getElementById("exp-input").value);
@@ -144,7 +142,9 @@ const specialKeysCheck = event => {
             currentExpression.scrollIntoView(scrollIntoViewOptions = {block: "nearest"});
         }
     } else if (event.key === "Enter") {
-        executeInput();
+        if (document.getElementById("exp-input").value.length > 0) {
+            executeInput();
+        }
     }
 }
 
@@ -584,12 +584,7 @@ const resetListeners = () => {
 
 // ]
 
-const saveValue = event => {
-    if (event.type === "keydown") {
-        if ((validKeys.includes(event.key) || specialKeys.includes(event.key)) && event.key !== "Enter") {
-
-        }
-    }
+const saveValue = () => {
     window.localStorage.setItem("value", document.getElementById("exp-input").value);
 }
 
@@ -632,8 +627,10 @@ for (let button in buttonInputs) {
 }
 
 document.getElementById("equal").addEventListener("click", () => {
-    executeInput();
-    window.localStorage.setItem("value", "");
+    if (document.getElementById("exp-input").value.length > 0) {
+        executeInput();
+        window.localStorage.setItem("value", "");
+    }
 });
 
 document.getElementById("up").addEventListener("click", event => {
@@ -719,7 +716,7 @@ let degreeAdjustment = 1;
 let highestExpressionId = -1;
 
 if (window.localStorage.getItem("expressions")) {
-    expressions = window.localStorage.getItem("expressions").split(",");
+    expressions = window.localStorage.getItem("expressions").split(",").filter(expression => expression !== "");
     for (expression of expressions) {
         addExpression();
         activeIndex++;
