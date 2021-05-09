@@ -49,15 +49,23 @@ const keyInput = event => {
         if (validKeys.includes(event.key)) { 
             if (event.key.length === 1) {
                 addSpecial(event.key, 1);
+                window.localStorage.setItem("value", document.getElementById("exp-input").value);
             }; 
         } else if (specialKeys.includes(event.key)) {
             specialKeysCheck(event);
+            window.localStorage.setItem("value", document.getElementById("exp-input").value);
         }
     } else {
         if (validKeys.includes(event.key)) { 
+            if (event.key !== "Backspace" && event.key !== "ArrowRight" && event.key !== "ArrowLeft") {
+                window.localStorage.setItem("value", document.getElementById("exp-input").value + event.key);
+            } else {
+                window.localStorage.setItem("value", document.getElementById("exp-input").value);
+            }
             return;
         } else if (specialKeys.includes(event.key)) {
             specialKeysCheck(event);
+            window.localStorage.setItem("value", document.getElementById("exp-input").value);
         } else {
             event.preventDefault();
         }         
@@ -188,6 +196,7 @@ const activateExpression = (event, upDownButton=false) => {
         clickedExpression.innerText = "";
         clickedExpression.innerHTML = '<input id="exp-input" autofocus></input>';
         document.getElementById("exp-input").value = expressionText;
+        window.localStorage.setItem("value", expressionText);
         activeIndex = Number(clickedExpression.parentElement.id.slice(1));
         clickedExpression.parentElement.children[0].id = "problem";
         clickedExpression.parentElement.children[1].id = "calculation";
@@ -197,6 +206,7 @@ const activateExpression = (event, upDownButton=false) => {
         expressionToActivate.innerText = "";
         expressionToActivate.innerHTML = '<input id="exp-input" autofocus></input>';
         document.getElementById("exp-input").value = expressionText;
+        window.localStorage.setItem("value", expressionText);
         expressionToActivate.parentElement.children[0].id = "problem";
         expressionToActivate.parentElement.children[1].id = "calculation";
     }
@@ -570,6 +580,19 @@ const resetListeners = () => {
     }
 }
 
+// const valueKeys = [
+
+// ]
+
+const saveValue = event => {
+    if (event.type === "keydown") {
+        if ((validKeys.includes(event.key) || specialKeys.includes(event.key)) && event.key !== "Enter") {
+
+        }
+    }
+    window.localStorage.setItem("value", document.getElementById("exp-input").value);
+}
+
 let buttonInputs = {
     "tan": ["tan", 3],
     "cos": ["cos", 3],
@@ -603,11 +626,15 @@ let buttonInputs = {
 
 for (let button in buttonInputs) {
     document.getElementById(button).children[0].addEventListener("click", () => {
-        addSpecial(buttonInputs[button][0], buttonInputs[button][1])
+        addSpecial(buttonInputs[button][0], buttonInputs[button][1]);
+        window.localStorage.setItem("value", document.getElementById("exp-input").value);
     });
 }
 
-document.getElementById("equal").addEventListener("click", executeInput);
+document.getElementById("equal").addEventListener("click", () => {
+    executeInput();
+    window.localStorage.setItem("value", "");
+});
 
 document.getElementById("up").addEventListener("click", event => {
     if (activeIndex !== 0) {
@@ -681,6 +708,10 @@ document.getElementById("github").addEventListener("click", () => {
     });
 });
 
+// document.addEventListener("keydown", saveValue);
+
+// document.addEventListener("click", saveValue);
+
 let expressions = [];
 let activeIndex = 0;
 let onDegrees = false;
@@ -696,5 +727,9 @@ if (window.localStorage.getItem("expressions")) {
 }
 
 addExpression(addIds=true);
+
+if (window.localStorage.getItem("value")) {
+    document.getElementById("exp-input").value = window.localStorage.getItem("value").split(",");
+}
 
 resetListeners();
