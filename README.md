@@ -6,6 +6,7 @@ Web extension that features a calculator straight from the web toolbar.
 
 VERSION 1.3 UPDATE
 - You no longer lose what is entered in the current expression should you close the Better Calculator. It now saves and reloads as what is entered in the current expression when you reopen it.
+- Pressing the "Enter" key or the "equal" button does nothing if the expression is empty, and any lingering empty expressions dissappear if you close and reopen the Better Calculator.
 
 VERSION 1.2 UPDATE
 - Added a red "CLEAR ALL" button to clear all expressions.
