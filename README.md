@@ -4,6 +4,9 @@ Web extension that features a calculator straight from the web toolbar.
 - Calculator includes basic arithmetic ( + - * / ) plus exponents, trigonometry, and logarithms.
 - Calculator respects the order of operations (parentheses first, then exponents, then multiplication and division, and finally addition and subtration, all left to right). 
 
+VERSION 1.3 UPDATE
+- You no longer lose what is entered in the current expression should you close the Better Calculator. It now saves and reloads as what is entered in the current expression when you reopen it.
+
 VERSION 1.2 UPDATE
 - Added a red "CLEAR ALL" button to clear all expressions.
 - Pressing the "C" button now automatically clears only the current expression.
