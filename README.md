@@ -4,18 +4,6 @@ Web extension that features a calculator straight from the web toolbar.
 - Calculator includes basic arithmetic ( + - * / ) plus exponents, trigonometry, and logarithms.
 - Calculator respects the order of operations (parentheses first, then exponents, then multiplication and division, and finally addition and subtration, all left to right). 
 
-VERSION 1.3 UPDATE
-- You no longer lose what is entered in the current expression should you close the Better Calculator. It now saves and reloads as what is entered in the current expression when you reopen it.
-- Pressing the "Enter" key or the "equal" button does nothing if the expression is empty, and any lingering empty expressions dissappear if you close and reopen the Better Calculator.
-
-VERSION 1.2 UPDATE
-- Added a red "CLEAR ALL" button to clear all expressions.
-- Pressing the "C" button now automatically clears only the current expression.
-
-VERSION 1.1 UPDATE
-- Fixed the issue where entering some keys puts it at the very end of the input, even if you mean to put it somewhere in the middle.
-- Clicking on a button now brings the input into focus (puts that blinky line there, called a caret). If the input is already in focus, the key you entered goes where the caret is; not at the very end.
-
 INSTALLATION:
 - Download the repository by clicking the green "Code" menu, then clicking "Download ZIP".
 - Go to where you downloaded "Better-Calculator-main.zip" and extract it.
