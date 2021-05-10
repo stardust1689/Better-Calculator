@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Better Calculator Extension",
     "description": "Browser toolbar calculator, including arithmetic, exponents, trigonometry, and logarithms, respecting the order of operations.",
-    "version": "1.3",
+    "version": "1.0",
     "icons": {
         "48": "icon.png",
         "96": "icon.png"
