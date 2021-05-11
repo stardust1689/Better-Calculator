@@ -532,13 +532,23 @@ const addExpression = (addIds = false) => {
     let newExpression = document.createElement("tr");
     newExpression.className = "expression";
     newExpression.id = "p" + `${activeIndex}`;
+    let newProblem = document.createElement("td");
+    newProblem.className = "problem"; 
+    let newCalculation = document.createElement("td");
+    newCalculation.className = "calculation";
     if (addIds) {
-        newExpression.innerHTML +=
-            '<td class="problem" id="problem"><input id="exp-input" autofocus></input></td><td class="calculation" id="calculation"></td>';
+        newInput = document.createElement("input");
+        newInput.id = "exp-input";
+        newProblem.id = "problem";
+        newProblem.append(newInput);
+        newCalculation.id = "calculation";
     } else {
-        newExpression.innerHTML +=
-            '<td class="problem">' + `${expressions[activeIndex]}` + '</td><td class="calculation">' + `${calculate(expressions[activeIndex], activeIndex)}` + `</td>`;
+        calculation = calculate(expressions[activeIndex], activeIndex);
+        newProblem.innerText = expressions[activeIndex];
+        newCalculation.innerText = calculation;
     }
+    newExpression.append(newProblem);
+    newExpression.append(newCalculation);
     document.getElementById("expressions").children[0].append(newExpression);
     highestExpressionId++;
 }
@@ -579,10 +589,6 @@ const resetListeners = () => {
         element.addEventListener("mousedown", activateExpression);
     }
 }
-
-// const valueKeys = [
-
-// ]
 
 const saveValue = () => {
     window.localStorage.setItem("value", document.getElementById("exp-input").value);
@@ -704,10 +710,6 @@ document.getElementById("github").addEventListener("click", () => {
         url: "https://github.com/stardust1689"
     });
 });
-
-// document.addEventListener("keydown", saveValue);
-
-// document.addEventListener("click", saveValue);
 
 let expressions = [];
 let activeIndex = 0;
