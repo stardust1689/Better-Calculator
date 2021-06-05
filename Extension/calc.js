@@ -704,10 +704,10 @@ document.getElementById("website").addEventListener("click", () => {
     });
 });
 
-document.getElementById("github").addEventListener("click", () => {
+document.getElementById("code").addEventListener("click", () => {
     chrome.tabs.create(createProperties = {
         active: true,
-        url: "https://github.com/stardust1689"
+        url: "https://github.com/stardust1689/Better-Calculator"
     });
 });
 
