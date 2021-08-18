@@ -700,14 +700,14 @@ document.getElementById("help").addEventListener("click", () => {
 document.getElementById("website").addEventListener("click", () => {
     chrome.tabs.create(createProperties = {
         active: true,
-        url: "https://stardust1689.github.io/Personal-Website/"
+        url: "https://wanderer709.github.io/Portfolio/"
     });
 });
 
 document.getElementById("code").addEventListener("click", () => {
     chrome.tabs.create(createProperties = {
         active: true,
-        url: "https://github.com/stardust1689/Better-Calculator"
+        url: "https://github.com/wanderer709/Better-Calculator"
     });
 });
 
