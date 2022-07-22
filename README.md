@@ -10,4 +10,4 @@ INSTALLATION LINKS:
 - Firefox: https://addons.mozilla.org/en-US/firefox/addon/better-calculator-extension/
 - Chromium (Brave, Chrome, etc.): https://chrome.google.com/webstore/devconsole/960dfc2b-7f2c-4023-8e50-a922c9458675/fdmebdmofpephljgnkdknflclenmnfbp/edit?hl=en
 
-Also, feel free to visit my website (stardust1689.github.io/Personal-Website/)!
+Also, feel free to visit my website (wanderer709.github.io/Personal-Website/)!
